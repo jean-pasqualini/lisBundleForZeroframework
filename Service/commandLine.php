@@ -6,6 +6,8 @@ use Interfaces\IService;
 
 class commandLine implements IService {
 	
+	private $_SERVER;
+	
 	public function __construct()
 	{
 		if(!empty($_SERVER["SERVER_NAME"])) {
@@ -13,6 +15,10 @@ class commandLine implements IService {
 		
 			exit("Cette application doit être appelée en ligne de commande.");
 		}
+		
+		\EventProxy::addEventsManager("onCommand");
+		
+		$this->_SERVER = $_SERVER;
 	}
 	
 	public static function getServiceName()
@@ -40,9 +46,16 @@ class commandLine implements IService {
 		return array("event.onReady");
 	}
 	
-	public static function updateOnReady()
+	public function getArguments()
+	{
+		return $this->_SERVER["argv"];
+	}
+	
+	public function updateOnReady()
 	{
 		echo "Le systeme est 100% opérationel.";
+		
+		call_user_func_array(array(\EventProxy::getEventsManager("onCommand"), "notify"), $this->getArguments());
 	}
 }
 
