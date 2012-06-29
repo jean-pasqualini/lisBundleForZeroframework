@@ -7,6 +7,8 @@
  * @package FrameworkLis
 */
 
+// UN test de modification depuis cloud9ide
+
 //set_exception_handler(array("LisException","handleException"));
 //set_error_handler("errorToException");
 //register_shutdown_function("FatalerrorToException");
