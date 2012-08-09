@@ -8,6 +8,9 @@
  * @version InDev
  * @package FrameworkLis
 */
+
+namespace lib;
+
 Class Object {
     
     /**

@@ -4,11 +4,18 @@
 
 	use Interfaces\IService;
 
+	use Service\commandLine;
+
     class lisKernel implements IService {
     	
-		public function __construct()
+		public function __construct($commandline)
 		{
 			\EventProxy::addEventsManager("onAppReady");
+			
+			$commandline->setListenParameters(array(
+				"ip" => commandLine::STRING_PARAMETERS,
+				"port" => commandLine::INTEGER_PARAMETERS,
+			));
 		}
 		
     	public static function getDependances()
