@@ -1,4 +1,6 @@
 <?php
+namespace lib;
+
 /**
  * Classe permettant de gérer les objets 2D hérité de Object
  * @author Jean pasqualini <jpasqualini75@gmail.com>

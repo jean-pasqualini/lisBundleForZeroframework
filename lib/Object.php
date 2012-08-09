@@ -264,6 +264,7 @@ Class Object {
     	
     	$definitions=array();
 	
+		/*
 	// Liste toutes les élement css
     	foreach(ApplicationLIS::GetCss() as $name => $value)
     	{
@@ -273,6 +274,7 @@ Class Object {
     			$definitions=array_merge($definitions,$value);
     		}
     	}
+		 */
     	
 	// Puis renvoie le tableau
     	return $definitions;

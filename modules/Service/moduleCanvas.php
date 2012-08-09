@@ -1,4 +1,10 @@
 <?php
+
+namespace Service;
+
+use Interfaces\IService;
+
+
 /**
  * Module de rendu visuelle canvas
  * @author Jean pasqualini <jpasqualini75@gmail.com>
@@ -6,7 +12,7 @@
  * @version InDev
  * @package ModuleLis
 */
-Class module_Canvas extends ModuleBase implements IModuleBase
+Class moduleCanvas implements IService
 {
   /**
    * @access private
@@ -32,32 +38,37 @@ Class module_Canvas extends ModuleBase implements IModuleBase
   */
   private $StrokeStyle;
   
-  /**
-   * Recupère le nom du module
-   * @access public
-   * @return string Le nom du module
-  */
-  public function GetModuleName()
-  {
-    return "Canvas";
-  }
-
-  /**
-   * Récupere la description du module
-   * @access public
-   * @return string La description du module
-  */
-  public function GetModuleDescription()
-  {
-      return "Gestion de l'affichage canvas";
-  }
+	public static function getServiceName()
+	{
+		return "lis.module.canvas";
+	}
+	
+	public static function isAutoload()
+	{
+		return true;
+	}
+	
+	public static function getDependances()
+	{
+		return array();
+	}
+	
+	public static function isReceiveUpdate()
+	{
+		return true;
+	}
+	
+	public static function getTags()
+	{
+		return array("");
+	}
   
   /**
    * Récupere la version du module
    * @access public
    * @return string La version du module
   */
-  public function GetVersion()
+  public function getVersion()
   {
       return "1.0";
   }
@@ -90,9 +101,7 @@ Class module_Canvas extends ModuleBase implements IModuleBase
   */
   public function __construct()
   {
-    parent::__construct();
-    // A voir autre chose
-    
+  /*
     // On récupere les styles css de l'aplication
     $css=Object::SCss("Application");
     
@@ -113,6 +122,7 @@ Class module_Canvas extends ModuleBase implements IModuleBase
         $this->FillRect(0,0,$w,$h);
       }
     }
+   */
   }
   
   /**

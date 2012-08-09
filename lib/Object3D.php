@@ -1,4 +1,7 @@
 <?php
+
+namespace lib;
+
 /**
  * Classe hérité de Object permettant de gerer les objets 3D
  * @author Jean pasqualini <jpasqualini75@gmail.com>
