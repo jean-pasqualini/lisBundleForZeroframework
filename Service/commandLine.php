@@ -126,6 +126,11 @@ class commandLine implements IService {
 	{
 		echo "Le systeme est 100% opérationel.";
 		
+		if(count($this->getArguments()) != count($this->getListenParameters()))
+		{
+			throw new \Exception("Le nombre d'argument requis n'est pas fourni");
+		}
+		
 		foreach($this->getArguments() as $index => $argument)
 		{
 			switch($this->getListenParameters()[$index])

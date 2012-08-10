@@ -8,11 +8,17 @@
 
     class lisKernel implements IService {
     	
-		public function __construct($commandline)
+		private $commandline;
+		private $socket;		
+		
+		public function __construct($commandline, $socket)
 		{
 			\EventProxy::addEventsManager("onAppReady");
 			
-			$commandline->setListenParameters(array(
+			$this->commandline = $commandline;
+			$this->socket = $socket;
+			
+			$this->commandline->setListenParameters(array(
 				"ip" => commandLine::STRING_PARAMETERS,
 				"port" => commandLine::INTEGER_PARAMETERS,
 			));
@@ -20,7 +26,7 @@
 		
     	public static function getDependances()
 		{
-			return array("lis.commandline");
+			return array("lis.commandline","lis.socket");
 		}
 		
 		public static function getTags()
@@ -45,6 +51,10 @@
 		
 		public function updateOnCommand($eventName, $scriptName, $adresseBind, $portBind)
 		{
+			$this->socket
+				 ->set($adresseBind,$portBind)
+				 ->listen();
+		
 			\EventProxy::getEventsManager("onAppReady")->notify();
 		}
     }

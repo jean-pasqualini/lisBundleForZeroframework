@@ -14,6 +14,8 @@ use Interfaces\IService;
 */
 Class moduleCanvas implements IService
 {
+   private $socket;
+	
   /**
    * @access private
    * @var int La taille des ligne déssine
@@ -50,7 +52,7 @@ Class moduleCanvas implements IService
 	
 	public static function getDependances()
 	{
-		return array();
+		return array("lis.socket");
 	}
 	
 	public static function isReceiveUpdate()
@@ -60,7 +62,7 @@ Class moduleCanvas implements IService
 	
 	public static function getTags()
 	{
-		return array("");
+		return array();
 	}
   
   /**
@@ -99,8 +101,10 @@ Class moduleCanvas implements IService
    * @access public
    * @return Canvas Retourne l'instance du module
   */
-  public function __construct()
+  public function __construct($socket)
   {
+  	
+	$this->socket = $socket;
   /*
     // On récupere les styles css de l'aplication
     $css=Object::SCss("Application");
@@ -133,8 +137,8 @@ Class moduleCanvas implements IService
   public function beginPath()
   {
     $data=array("Type" => "view" , "Action" => "beginPath");
-    $this->send($data);
-    if(!$this->recv()) { return false; } else { return true; }
+    $this->socket->send($data);
+    if(!$this->socket->recv()) { return false; } else { return true; }
   }
   
   /**
@@ -145,8 +149,8 @@ Class moduleCanvas implements IService
   public function closePath()
   {
     $data=array("Type" => "view" , "Action" => "closePath");
-    $this->send($data);
-    if(!$this->recv()) { return false; } else { return true; }
+    $this->socket->send($data);
+    if(!$this->socket->recv()) { return false; } else { return true; }
   }
   
   /**
@@ -161,8 +165,8 @@ Class moduleCanvas implements IService
   public function FillRect($x,$y,$w,$h)
   {
     $data=array("Type" => "view" , "Action" => "FillRect" , "X" => $x, "Y" => $y , "W" => $w , "H" => $h);
-    $this->send($data);
-    if(!$this->recv()) { return false; } else { return true; }
+    $this->socket->send($data);
+    if(!$this->socket->recv()) { return false; } else { return true; }
   }
   
   /**
@@ -177,8 +181,8 @@ Class moduleCanvas implements IService
   public function StrokeRect($x,$y,$w,$h)
   {
     $data=array("Type" => "view" , "Action" => "StrokeRect" , "X" => $x, "Y" => $y , "W" => $w , "H" => $h);
-    $this->send($data);
-    if(!$this->recv()) { return false; } else { return true; }
+    $this->socket->send($data);
+    if(!$this->socket->recv()) { return false; } else { return true; }
   }
   
   /**
@@ -193,8 +197,8 @@ Class moduleCanvas implements IService
   public function ClearRect($x,$y,$w,$h)
   {
     $data=array("Type" => "view" , "Action" => "ClearRect" , "X" => $x, "Y" => $y , "W" => $w , "H" => $h);
-    $this->send($data);
-    if(!$this->recv()) { return false; } else { return true; }
+    $this->socket->send($data);
+    if(!$this->socket->recv()) { return false; } else { return true; }
   }
   
   /**
@@ -209,8 +213,8 @@ Class moduleCanvas implements IService
     
     if(is_object($value)) { $gradient=true; $value=$value->Getname(); } else { $gradient=false; }
     $data=array("Type" => "view" , "Action" => "FillStyle" , "value" => $value , "Gradient" => $gradient);
-    $this->send($data);
-    if(!$this->recv()) { return false; } else { return true; }
+    $this->socket->send($data);
+    if(!$this->socket->recv()) { return false; } else { return true; }
   }
   
   /**
@@ -225,8 +229,8 @@ Class moduleCanvas implements IService
     if($this->StrokeStyle == $value) { return true; } else { $this->StrokeStyle = $value; }
         
     $data=array("Type" => "view" , "Action" => "StrokeStyle", "value" => $value , "Gradient" => $gradient);
-    $this->send($data);
-    if(!$this->recv()) { return false; } else { return true; }
+    $this->socket->send($data);
+    if(!$this->socket->recv()) { return false; } else { return true; }
   }
   
   /**
@@ -239,8 +243,8 @@ Class moduleCanvas implements IService
   public function MoveTo($x,$y)
   {
     $data=array("Type" => "view" , "Action" => "MoveTo" , "X" => $x , "Y" => $y);
-    $this->send($data);
-    if(!$this->recv()) { return false; } else { return true; }
+    $this->socket->send($data);
+    if(!$this->socket->recv()) { return false; } else { return true; }
   }
   
   /**
@@ -255,8 +259,8 @@ Class moduleCanvas implements IService
   public function QuadraticCurveTo($cp1x,$cp1y,$x,$y)
   {
     $data=array("Type" => "view" , "Action" => "QuadraticCurveTo" , "Cp1x" => $cp1x, "Cp1y" => $cp1y , "X" => $x, "Y" => $y);
-    $this->send($data);
-    if(!$this->recv()) { return false; } else { return true; }
+    $this->socket->send($data);
+    if(!$this->socket->recv()) { return false; } else { return true; }
   }
 
   /**
@@ -273,8 +277,8 @@ Class moduleCanvas implements IService
   public function BezierCurveTo($cp1x,$cp1y,$cp2x,$cp2y,$x,$y)
   {
     $data=array("Type" => "view" , "Action" => "BezierCurveTo" , "Cp1x" => $cp1x, "Cp1y" => $cp1y , "Cp2x" => $cp2x, "Cp2y" => $cp2y , "X" => $x , "Y" => $y);
-    $this->send($data);
-    if(!$this->recv()) { return false; } else { return true; }
+    $this->socket->send($data);
+    if(!$this->socket->recv()) { return false; } else { return true; }
   }
 
   /**
@@ -291,8 +295,8 @@ Class moduleCanvas implements IService
   public function Arc($x,$y,$rayon,$startAngle,$endAngle,$gauche = "true")
   {
     $data=array("Type" => "view" , "Action" => "Arc" , "X" => $x , "Y" => $y,"Rayon" => $rayon, "StartAngle" => $startAngle, "EndAngle" => $endAngle, "Gauche" => $gauche);
-    $this->send($data);
-    if(!$this->recv()) { return false; } else { return true; }
+    $this->socket->send($data);
+    if(!$this->socket->recv()) { return false; } else { return true; }
   }
 
   /**
@@ -308,8 +312,8 @@ Class moduleCanvas implements IService
   public function CreateLinearGradient($gradient,$x1,$y1,$x2,$y2)
   {
     $data=array("Type" => "view" , "Action" => "CreateLinearGradient" , "Gradient" => $gradient ,"X1" => $x1 , "Y1" => $y1 , "X2" => $x2 , "Y2" => $y2);
-    $this->send($data);
-    if(!$this->recv()) { return false; } else { return true; }
+    $this->socket->send($data);
+    if(!$this->socket->recv()) { return false; } else { return true; }
   }
 
   /**
@@ -337,8 +341,8 @@ Class moduleCanvas implements IService
                   "Y2" => $y2 ,
                   "EndRayon" => $EndRayon
                   ));
-    $this->send($data);
-    if(!$this->recv()) { return false; } else { return true; }
+    $this->socket->send($data);
+    if(!$this->socket->recv()) { return false; } else { return true; }
   }
 
   /**
@@ -352,8 +356,8 @@ Class moduleCanvas implements IService
   public function AddColorToGradient($gradient,$value,$offset=0)
   {
     $data=array("Type" => "view" , "Action" => "AddColorToGradient" , "Offset" => $offset , "Gradient" => $gradient , "value" => $value);
-    $this->send($data);
-    if(!$this->recv()) { return false; } else { return true; }
+    $this->socket->send($data);
+    if(!$this->socket->recv()) { return false; } else { return true; }
   }
 
   /**
@@ -370,8 +374,8 @@ Class moduleCanvas implements IService
     $this->font = $police;
     
     $data=array("Type" => "view" , "Action" => "font" , "value" => $taille." ".$police);
-    $this->send($data);
-    if(!$this->recv()) { return false; } else { return true; }
+    $this->socket->send($data);
+    if(!$this->socket->recv()) { return false; } else { return true; }
   }
 
   /**
@@ -385,8 +389,8 @@ Class moduleCanvas implements IService
   public function TextFill($value,$x,$y)
   {
     $data=array("Type" => "view" , "Action" => "TextFill" , "value" => $value , "X" => $x , "Y" => $y);
-    $this->send($data);
-    if(!$this->recv()) { return false; } else { return true; }
+    $this->socket->send($data);
+    if(!$this->socket->recv()) { return false; } else { return true; }
   }
 
   /**
@@ -400,8 +404,8 @@ Class moduleCanvas implements IService
   public function TextStroke($value, $x, $y)
   {
     $data=array("Type" => "view" , "Action" => "TextStroke" , "value" => $value , "X" => $x , "Y" => $y);
-    $this->send($data);
-    if(!$this->recv()) { return false; } else { return true; }
+    $this->socket->send($data);
+    if(!$this->socket->recv()) { return false; } else { return true; }
   }
 
   /**
@@ -413,8 +417,8 @@ Class moduleCanvas implements IService
   public function SetWidth($value)
   {
     $data=array("Type" => "view" , "Action" => "SetWidth" , "value" => $value);
-    $this->send($data);
-    if(!$this->recv()) { return false; } else { return true; }
+    $this->socket->send($data);
+    if(!$this->socket->recv()) { return false; } else { return true; }
   }
 
   /**
@@ -426,8 +430,8 @@ Class moduleCanvas implements IService
   public function SetHeight($value)
   {
     $data=array("Type" => "view" , "Action" => "SetHeight" , "value" => $value);
-    $this->send($data);
-    if(!$this->recv()) { return false; } else { return true; }
+    $this->socket->send($data);
+    if(!$this->socket->recv()) { return false; } else { return true; }
   }
   
   /**
@@ -439,8 +443,8 @@ Class moduleCanvas implements IService
   public function SetGlobalAlpha($value)
   {
     $data=array("Type" => "view" , "Action" => "SetGlobalAlpha" , "value" => $value);
-    $this->send($data);
-    if(!$this->recv()) { return false; } else { return true; }
+    $this->socket->send($data);
+    if(!$this->socket->recv()) { return false; } else { return true; }
   }
 
   /**
@@ -455,8 +459,8 @@ Class moduleCanvas implements IService
   public function SetCompositeOperation($value)
   {
     $data=array("Type" => "view" , "Action" => "SetCompositeOperation" , "value" => $value);
-    $this->send($data);
-    if(!$this->recv()) { return false; } else { return true; }
+    $this->socket->send($data);
+    if(!$this->socket->recv()) { return false; } else { return true; }
   }
 
   /**
@@ -468,8 +472,8 @@ Class moduleCanvas implements IService
   public function SetLineWidth($value)
   {
     $data=array("Type" => "view" , "Action" => "SetLineWidth" , "value" => $value);
-    $this->send($data);
-    if(!$this->recv()) { return false; } else { return true; }
+    $this->socket->send($data);
+    if(!$this->socket->recv()) { return false; } else { return true; }
   }
   
   /**

@@ -167,7 +167,8 @@ Class Object {
     */
     public static function RegisterObject($object)
     {
-        Object::$Register_object[get_class($object)]=$object;
+    	//echo join('', array_slice(explode('\\', get_class($object)), -1));
+        Object::$Register_object[join('', array_slice(explode('\\', get_class($object)), -1))]=$object;
         return $object;
     }
     
@@ -241,7 +242,7 @@ Class Object {
         else // Sinon
         {
 	    // Genere une erreur puis retourne nul
-            trigger_error("[ERREUR] Objet (".$name_object.") non trouver par getobjet!!!!",E_USER_NOTICE);
+            throw new \Exception("[ERREUR] Objet (".$name_object.") non trouver par getobjet!!!!");
             return null;
         }
     }
@@ -344,7 +345,7 @@ Class Object {
     	$positionY = $this->PositionY;
 	
 	// On efface la partie de l'objet sur la sortie 
-        ApplicationLIS::GetModule("Canvas")->ClearRect($positionX,$positionY,$positionX + $this->Width,$positionY + $this->Height);
+        \ZeroFramework::GetInstance()->getService("lis.module.canvas")->ClearRect($positionX,$positionY,$positionX + $this->Width,$positionY + $this->Height);
     }
     
     /**
